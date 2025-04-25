@@ -1,15 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import NewPlantForm from "./NewPlantForm";
-import PlantList from "./PlantList";
 import Search from "./Search";
+import PlantList from "./PlantList";
 
 function PlantPage() {
+  const [plants, setPlants] = useState([]);
+
+  useEffect(() => {
+    // Load all plants initially
+    fetch("http://localhost:6001/plants")
+      .then((r) => r.json())
+      .then(setPlants);
+  }, []);
+
   return (
-    <main>
+    
+      <main>
       <NewPlantForm />
-      <Search />
-      <PlantList />
+      <Search onSearchResults={setPlants}/>
+      <PlantList  plants={plants} />
     </main>
+    
+      
+    
   );
 }
 
